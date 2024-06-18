@@ -1,8 +1,13 @@
-
+const rock = document.querySelector('.rock')
+const paper = document.querySelector('.paper')
+const scissors = document.querySelector('.scissors')
+const div = document.querySelector('div')
+const result = document.createElement('div')
+const scores = document.createElement('div')
+const winner = document.createElement('div')
 let humanScore = 0
 let computerScore = 0
 
-//It return random choices from 'rock,paper,scissors'
 
 function getComputerChoice(){
     let choices ="rock,paper,scissors"
@@ -13,60 +18,82 @@ function getComputerChoice(){
 }
 
 
-//It return user input from the given choices 
+function gamerun(choice){
+    const humanSelection = choice
+    const computerSelection = getComputerChoice()
+    playRound(humanSelection,computerSelection)
+}
 
-function getHumanChoice(){
-    let user = prompt("Enter your choice 'rock,paper,scissors' :").toLowerCase()
-    if(user==='rock'||user==='paper'||user==='scissors'){
-        return user
-    }else{
-        alert('Enter a valid choice')
-    }
+function endWinner(win){
+    winner.textContent=`${win} won! . ${win} reached 5 points. `
+    div.appendChild(winner)
+    div.removeChild(result)
+    playRound=false
     
 }
 
-//Logic to play one round 
 
 function playRound(humanChoice,computerChoice){
+    if(humanScore===5){
+       endWinner('You')
+    }
+    else if(computerScore===5){
+       endWinner('Computer')
+    }
     let messageWin=`You win ${humanChoice} beats ${computerChoice}`
     if(humanChoice===computerChoice){
-        console.log('It\'s a tie')
+       result.textContent=`It\'s a tie`
+        div.appendChild(result)
+        
+        
+        
     }else if(humanChoice==='rock' && computerChoice==='scissors'){
-        console.log(messageWin)
+       result.textContent=`${messageWin}`
+        div.appendChild(result)
         humanScore++
         
+       
+        
     }else if(humanChoice==='paper' && computerChoice==='rock'){
-        console.log(messageWin)
+       result.textContent=`${messageWin}`
+        div.appendChild(result)
         humanScore++
         
     }else if(humanChoice==='scissors' && computerChoice==='paper'){
-        console.log(messageWin)
+       result.textContent=`${messageWin}`
+        div.appendChild(result)
         humanScore++
         
     }else{
-        console.log(`You lose ${computerChoice} beats ${humanChoice}`)
+       result.textContent=`You lose ${computerChoice} beats ${humanChoice}`
+        div.appendChild(result)
         computerScore++
     }
+    scores.textContent=`Player = ${humanScore}  Computer = ${computerScore}`
+    div.appendChild(scores)
+    
+   
 }
 
+rock.addEventListener("click",(e)=>{
+    const choiceNew1 = e.target.textContent
+    const selRock = choiceNew1.toLowerCase()
+    gamerun(selRock)
+
+})
+paper.addEventListener('click',(e)=>{
+    const choiceNew1 = e.target.textContent
+    const selPaper = choiceNew1.toLowerCase()
+    gamerun(selPaper)
+
+})
+scissors.addEventListener('click',(e)=>{
+    const choiceNew1 = e.target.textContent
+    const selScissors = choiceNew1.toLowerCase()
+    gamerun(selScissors)
+    
+
+})
 
 
-//Play the game for 5 time and print the result at the end
 
-function playGame(){
- i=0
- while(i<5){
-    const humanSelection = getHumanChoice()
-    const computerSelection = getComputerChoice()
-    playRound(humanSelection,computerSelection)
- i++
-
- }
- if(humanScore > computerScore){
-    console.log(`Finally! You win by ${humanScore} points`)
- }else{
-     console.log(`Finally! You lose by ${computerScore} points`)
- }
-
-}
-playGame()
